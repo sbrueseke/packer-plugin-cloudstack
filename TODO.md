@@ -1,9 +1,13 @@
 The goal is to add the following parameters incl. there respectiv functions to the packer cloudstack plugin
 
 boot_wait (duration string | ex: "1h5m2s")
+
 boot_command ([]string)
+
 websocket_url (string)
+
 websocket_port (int)
+
 
 With a newly integrated cloudstack feature (https://www.shapeblue.com/api-driven-console-access/) it should be possible for third party software to get access to the VNC console via the data of response of api call createConsoleEndpoint.
 Here is a response:
@@ -18,15 +22,19 @@ We should use the packer qemu plugin as a template when it comes to at which ste
 Parameter explanation
 
 boot_wait (duration string | ex: "1h5m2s")
+
 The time to wait after booting the initial virtual machine before typing the boot_command. The value of this should be a duration. Examples are 5s and 1m30s which will cause Packer to wait five seconds and one minute 30 seconds, respectively. If this isn't specified, the default is 10s or 10 seconds. To set boot_wait to 0s, use a negative number, such as "-1s"
 
 boot_command ([]string)
+
 This is an array of commands to type when the virtual machine is first booted. The goal of these commands should be to type just enough to initialize the operating system installer. Special keys can be typed as well, and are covered in the section below on the boot command. If this is not specified, it is assumed the installer will start itself.
 
 websocket_url (string)
+
 With this parameter you can override the default value of the url the packer cloudstack plugin should use to establish the websocket connection. Default is the host value from api response of createConsoleEndpoint.
 
 websocket_port (int)
+
 With this parameter you can override the default value of the port the packer cloudstack plugin should use to establish the websocket connection. Default is the port value from api response of createConsoleEndpoint.
 
 
