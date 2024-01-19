@@ -15,9 +15,10 @@ Here is a response:
 
 There are 2 different ways to access the console. First way is via https link provided by the response. Second way is to open a websocket connection via data provided by the response. Prefered (and maybe only way) is to use the websocket connection to send keyboard commands to the console.
 
-The packer qemu plugin already uses some kind of way to send keyboard commands to the VNC console. As far as I understand you need a direct connection to noVNC console to use this. This direct way is not available in Cloudstack. But maybe we can use the code from the packer qemu plugin as a template for the code for the packer cloudstack plugin and extend or rewrite some code to get it work using websocket connection to send keyboard commands. You will find a list of boot_commands here: https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu#boot-configuration
+The packer-plugin-vmware (https://github.com/hashicorp/packer-plugin-vmware/blob/main/builder/vmware/common/step_vnc_connect.go#L54) uses a websocket connection to send keyboard commands (connectOverWebsocket). Mybe we use some code of this.
 
-We should use the packer qemu plugin as a template when it comes to at which step we implement the new code and execute it during packer os template creation. If it make sense the new feature should be implemented in step step_create_instance.go or after it.
+The packer qemu plugin also uses some kind of way to send keyboard commands to the VNC console. As far as I understand you need a direct connection to noVNC console to use this. This direct way is not available in Cloudstack. But maybe we can use the code from the packer qemu plugin as a template for the code for the packer cloudstack plugin and extend or rewrite some code to get it work using websocket connection to send keyboard commands. You will find a list of boot_commands here: https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu#boot-configuration
+
 
 Parameter explanation
 
@@ -27,7 +28,7 @@ The time to wait after booting the initial virtual machine before typing the boo
 
 boot_command ([]string)
 
-This is an array of commands to type when the virtual machine is first booted. The goal of these commands should be to type just enough to initialize the operating system installer. Special keys can be typed as well, and are covered in the section below on the boot command. If this is not specified, it is assumed the installer will start itself.
+This is an array of commands to send via websocket connection when the virtual machine is first booted. The goal of these commands should be to type just enough to initialize the operating system installer. Special keys can be typed as well, and are covered in the section below on the boot command. If this is not specified, it is assumed the installer will start itself.
 
 websocket_url (string)
 
