@@ -76,6 +76,8 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		},
 		&stepSetupNetworking{},
 		&stepDetachIso{},
+		&stepSetUpVNC{},
+		&stepBootCommandVNC{},
 		&communicator.StepConnect{
 			Config:    &b.config.Comm,
 			Host:      communicator.CommHost(b.config.Comm.Host(), "ipaddress"),
