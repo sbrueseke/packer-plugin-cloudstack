@@ -6,11 +6,11 @@ package cloudstack
 import (
 	"context"
 	"fmt"
+	"github.com/sbrueseke/cloudstack-go/v2/cloudstack"
 	"math/rand"
 	"strings"
 	"time"
 
-	"github.com/apache/cloudstack-go/v2/cloudstack"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 )
@@ -242,7 +242,8 @@ func (s *stepSetupNetworking) Cleanup(state multistep.StateBag) {
 
 	if ipAddrID, ok := state.Get("ip_address_id").(string); ok && ipAddrID != "" {
 		// Create a new parameter struct.
-		p := client.Address.NewDisassociateIpAddressParams(ipAddrID)
+		p := client.Address.NewDisassociateIpAddressParams()
+		p.SetIpaddress(ipAddrID)
 
 		ui.Message("Releasing public IP address...")
 		if _, err := client.Address.DisassociateIpAddress(p); err != nil {

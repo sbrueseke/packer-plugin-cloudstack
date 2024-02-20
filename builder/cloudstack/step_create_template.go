@@ -6,9 +6,9 @@ package cloudstack
 import (
 	"context"
 	"fmt"
+	"github.com/sbrueseke/cloudstack-go/v2/cloudstack"
 	"time"
 
-	"github.com/apache/cloudstack-go/v2/cloudstack"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 )
@@ -33,7 +33,6 @@ func (s *stepCreateTemplate) Run(ctx context.Context, state multistep.StateBag) 
 
 	// Create a new parameter struct.
 	p := client.Template.NewCreateTemplateParams(
-		config.TemplateDisplayText,
 		config.TemplateName,
 		config.TemplateOS,
 	)

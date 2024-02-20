@@ -4,9 +4,9 @@
 package cloudstack
 
 import (
+	"github.com/sbrueseke/cloudstack-go/v2/cloudstack"
 	"testing"
 
-	"github.com/apache/cloudstack-go/v2/cloudstack"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 )
 
