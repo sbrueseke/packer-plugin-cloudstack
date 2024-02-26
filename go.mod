@@ -3,10 +3,12 @@ module github.com/hashicorp/packer-plugin-cloudstack
 go 1.19
 
 require (
-	github.com/sbrueseke/cloudstack-go/v2 v2.0.0
 	github.com/hashicorp/hcl/v2 v2.19.1
 	github.com/hashicorp/packer-plugin-sdk v0.5.2
+	github.com/mitchellh/go-vnc v0.0.0-20150629162542-723ed9867aed
+	github.com/sbrueseke/cloudstack-go/v2 v2.2.0
 	github.com/zclconf/go-cty v1.13.3
+	golang.org/x/net v0.17.0
 )
 
 require (
@@ -81,7 +83,7 @@ require (
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
-	golang.org/x/net v0.17.0 // indirect
+	golang.org/x/mobile v0.0.0-20210901025245-1fde1d6c3ca1 // indirect
 	golang.org/x/oauth2 v0.1.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/term v0.13.0 // indirect
