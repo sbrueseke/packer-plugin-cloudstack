@@ -15,6 +15,7 @@ type stepBootCommandVNC struct {
 	VNCEnabled bool
 	Config     bootcommand.VNCConfig
 	BootWait   time.Duration
+	Ctx        interpolate.Context
 }
 
 func (s stepBootCommandVNC) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {

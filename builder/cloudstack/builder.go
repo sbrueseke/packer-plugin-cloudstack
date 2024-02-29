@@ -85,6 +85,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 			VNCEnabled: !b.config.DisableVNC,
 			Config:     b.config.VNCConfig,
 			BootWait:   b.config.BootWait,
+			Ctx:        b.config.ctx,
 		},
 		&communicator.StepConnect{
 			Config:    &b.config.Comm,
