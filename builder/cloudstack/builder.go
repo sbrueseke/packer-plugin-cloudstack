@@ -79,6 +79,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		&stepSetUpVNC{
 			VNCEnabled:         !b.config.DisableVNC,
 			WebsocketURL:       b.config.WebsocketURL,
+			WebsocketPORT:      b.config.WebsocketPort,
 			InsecureConnection: b.config.InsecureConnection,
 		},
 		&stepBootCommandVNC{

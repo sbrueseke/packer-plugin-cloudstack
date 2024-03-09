@@ -17,6 +17,7 @@ import (
 type stepSetUpVNC struct {
 	VNCEnabled         bool
 	WebsocketURL       string
+	WebsocketPORT      int
 	InsecureConnection bool
 }
 
@@ -28,18 +29,11 @@ func (s stepSetUpVNC) Run(ctx context.Context, state multistep.StateBag) multist
 	ui := state.Get("ui").(packersdk.Ui)
 	ui.Say("Setting up VNC...")
 
-	var websocketURL string
-
-	if s.WebsocketURL != "" {
-		websocketURL = s.WebsocketURL
-	} else {
-		var err error
-		websocketURL, err = setUpWithCreateConsoleEndpoint(state)
-		if err != nil {
-			state.Put("error", err)
-			ui.Error(err.Error())
-			return multistep.ActionHalt
-		}
+	websocketURL, err := setUpWithCreateConsoleEndpoint(state, 443)
+	if err != nil {
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
 	}
 
 	//connect to websocket
@@ -50,6 +44,7 @@ func (s stepSetUpVNC) Run(ctx context.Context, state multistep.StateBag) multist
 		state.Put("error", fmt.Errorf("Error parsing websocket url: %s\n", err))
 		return multistep.ActionHalt
 	}
+	ui.Say(websocketURL)
 	origin, err := url.Parse("http://localhost")
 	if err != nil {
 		state.Put("error", fmt.Errorf("Error parsing websocket origin url: %s\n", err))
@@ -73,7 +68,7 @@ func (s stepSetUpVNC) Run(ctx context.Context, state multistep.StateBag) multist
 
 	// Setup the VNC connection over the websocket
 	ccconfig := &vnc.ClientConfig{
-		Auth:      []vnc.ClientAuth{new(vnc.ClientAuthNone)},
+		Auth:      []vnc.ClientAuth{&vnc.PasswordAuth{Password: "THEPASSWORD"}},
 		Exclusive: false,
 	}
 	connection, err := vnc.Client(nc, ccconfig)
@@ -86,7 +81,7 @@ func (s stepSetUpVNC) Run(ctx context.Context, state multistep.StateBag) multist
 	return multistep.ActionContinue
 }
 
-func setUpWithCreateConsoleEndpoint(state multistep.StateBag) (string, error) {
+func setUpWithCreateConsoleEndpoint(state multistep.StateBag, configPort int) (string, error) {
 	client := state.Get("client").(*cloudstack.CloudStackClient)
 
 	virtualMachineId := state.Get("instance_id").(string)
@@ -99,8 +94,14 @@ func setUpWithCreateConsoleEndpoint(state multistep.StateBag) (string, error) {
 
 	host := endpoint.Websocket["host"].(string)
 	path := endpoint.Websocket["path"].(string)
-	port, _ := strconv.Atoi(endpoint.Websocket["port"].(string))
 	token := endpoint.Websocket["token"].(string)
+
+	var port int
+	if configPort != 0 {
+		port = configPort
+	} else {
+		port, _ = strconv.Atoi(endpoint.Websocket["port"].(string))
+	}
 
 	websocketUrl := fmt.Sprintf("wss://%s:%d/%s?token=%s", host, port, path, token)
 

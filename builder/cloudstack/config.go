@@ -168,7 +168,8 @@ type Config struct {
 
 	Tags map[string]string `mapstructure:"tags"`
 
-	WebsocketURL string `mapstructure:"websocket_url" required:"false"`
+	WebsocketURL  string `mapstructure:"websocket_url" required:"false"`
+	WebsocketPort int    `mapstructure:"websocket_port" required:"false"`
 
 	// Do not validate VNC over websocket server's TLS certificate. Defaults to `false`.
 	InsecureConnection bool `mapstructure:"insecure_connection" required:"false"`
