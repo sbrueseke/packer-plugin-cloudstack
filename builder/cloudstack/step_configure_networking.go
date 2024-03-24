@@ -242,8 +242,7 @@ func (s *stepSetupNetworking) Cleanup(state multistep.StateBag) {
 
 	if ipAddrID, ok := state.Get("ip_address_id").(string); ok && ipAddrID != "" {
 		// Create a new parameter struct.
-		p := client.Address.NewDisassociateIpAddressParams()
-		p.SetIpaddress(ipAddrID)
+		p := client.Address.NewDisassociateIpAddressParams(ipAddrID)
 
 		ui.Message("Releasing public IP address...")
 		if _, err := client.Address.DisassociateIpAddress(p); err != nil {
