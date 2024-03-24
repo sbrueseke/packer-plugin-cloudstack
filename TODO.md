@@ -41,7 +41,7 @@ With this parameter you can override the default value of the port the packer cl
 
 
 More info
-https://github.com/sbrueseke/packer-plugin-cloudstack
+https://github.com/apache/packer-plugin-cloudstack
 https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu
 https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu#boot-configuration
 https://developer.hashicorp.com/packer/integrations/hashicorp/cloudstack/latest/components/builder/cloudstack

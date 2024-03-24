@@ -3,10 +3,10 @@ module github.com/hashicorp/packer-plugin-cloudstack
 go 1.19
 
 require (
+	github.com/apache/cloudstack-go/v2 v2.16.0
 	github.com/hashicorp/hcl/v2 v2.19.1
 	github.com/hashicorp/packer-plugin-sdk v0.5.2
 	github.com/mitchellh/go-vnc v0.0.0-20150629162542-723ed9867aed
-	github.com/sbrueseke/cloudstack-go/v2 v2.2.0
 	github.com/zclconf/go-cty v1.13.3
 	golang.org/x/net v0.17.0
 )
