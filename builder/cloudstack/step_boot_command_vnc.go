@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
-	"github.com/mitchellh/go-vnc"
+	"github.com/sbrueseke/go-vnc"
 	"time"
 )
 
@@ -69,5 +69,4 @@ func (s stepBootCommandVNC) Run(ctx context.Context, state multistep.StateBag) m
 }
 
 func (s stepBootCommandVNC) Cleanup(bag multistep.StateBag) {
-	//TODO implement me
 }

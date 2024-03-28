@@ -40,6 +40,11 @@ source "cloudstack" "ubuntu" {
   # http_directory            = "httpdir/"
   # http_port_min             = 80
   # http_port_max             = 80
+  websocket_port = 80
+  boot_command = [
+    "t",
+    "t"
+  ]
 }
 
 build {

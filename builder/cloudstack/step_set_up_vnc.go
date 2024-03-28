@@ -7,7 +7,7 @@ import (
 	"github.com/apache/cloudstack-go/v2/cloudstack"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
-	"github.com/mitchellh/go-vnc"
+	"github.com/sbrueseke/go-vnc"
 	"golang.org/x/net/websocket"
 	"log"
 	"net/url"
@@ -29,7 +29,7 @@ func (s stepSetUpVNC) Run(ctx context.Context, state multistep.StateBag) multist
 	ui := state.Get("ui").(packersdk.Ui)
 	ui.Say("Setting up VNC...")
 
-	websocketURL, err := setUpWithCreateConsoleEndpoint(state, 443)
+	websocketURL, err := setUpWithCreateConsoleEndpoint(state, 0)
 	if err != nil {
 		state.Put("error", err)
 		ui.Error(err.Error())
@@ -68,7 +68,7 @@ func (s stepSetUpVNC) Run(ctx context.Context, state multistep.StateBag) multist
 
 	// Setup the VNC connection over the websocket
 	ccconfig := &vnc.ClientConfig{
-		Auth:      []vnc.ClientAuth{&vnc.PasswordAuth{Password: "THEPASSWORD"}},
+		Auth:      []vnc.ClientAuth{new(vnc.VencryptAuth)},
 		Exclusive: false,
 	}
 	connection, err := vnc.Client(nc, ccconfig)

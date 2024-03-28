@@ -33,6 +33,7 @@ func (s *stepCreateTemplate) Run(ctx context.Context, state multistep.StateBag) 
 
 	// Create a new parameter struct.
 	p := client.Template.NewCreateTemplateParams(
+		config.TemplateDisplayText,
 		config.TemplateName,
 		config.TemplateOS,
 	)
