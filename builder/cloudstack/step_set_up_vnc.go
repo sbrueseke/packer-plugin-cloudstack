@@ -11,13 +11,11 @@ import (
 	"golang.org/x/net/websocket"
 	"log"
 	"net/url"
-	"strconv"
 )
 
 type stepSetUpVNC struct {
 	VNCEnabled         bool
 	WebsocketURL       string
-	WebsocketPORT      int
 	InsecureConnection bool
 }
 
@@ -29,22 +27,29 @@ func (s stepSetUpVNC) Run(ctx context.Context, state multistep.StateBag) multist
 	ui := state.Get("ui").(packersdk.Ui)
 	ui.Say("Setting up VNC...")
 
-	websocketURL, err := setUpWithCreateConsoleEndpoint(state, 0)
-	if err != nil {
-		state.Put("error", err)
-		ui.Error(err.Error())
-		return multistep.ActionHalt
+	var wsURL string
+
+	if s.WebsocketURL != "" {
+		wsURL = s.WebsocketURL
+	} else {
+		consoleEndpointURL, err := setUpWithCreateConsoleEndpoint(state)
+		if err != nil {
+			state.Put("error", err)
+			ui.Error(err.Error())
+			return multistep.ActionHalt
+		}
+		wsURL = consoleEndpointURL
 	}
 
 	//connect to websocket
 
-	log.Printf("[DEBUG] websocket url: %s", websocketURL)
-	console, err := url.Parse(websocketURL)
+	log.Printf("[DEBUG] websocket url: %s", wsURL)
+	console, err := url.Parse(wsURL)
 	if err != nil {
 		state.Put("error", fmt.Errorf("Error parsing websocket url: %s\n", err))
 		return multistep.ActionHalt
 	}
-	ui.Say(websocketURL)
+	ui.Say(wsURL)
 	origin, err := url.Parse("http://localhost")
 	if err != nil {
 		state.Put("error", fmt.Errorf("Error parsing websocket origin url: %s\n", err))
@@ -81,7 +86,7 @@ func (s stepSetUpVNC) Run(ctx context.Context, state multistep.StateBag) multist
 	return multistep.ActionContinue
 }
 
-func setUpWithCreateConsoleEndpoint(state multistep.StateBag, configPort int) (string, error) {
+func setUpWithCreateConsoleEndpoint(state multistep.StateBag) (string, error) {
 	client := state.Get("client").(*cloudstack.CloudStackClient)
 
 	virtualMachineId := state.Get("instance_id").(string)
@@ -95,15 +100,9 @@ func setUpWithCreateConsoleEndpoint(state multistep.StateBag, configPort int) (s
 	host := endpoint.Websocket["host"].(string)
 	path := endpoint.Websocket["path"].(string)
 	token := endpoint.Websocket["token"].(string)
+	port := endpoint.Websocket["port"].(string)
 
-	var port int
-	if configPort != 0 {
-		port = configPort
-	} else {
-		port, _ = strconv.Atoi(endpoint.Websocket["port"].(string))
-	}
-
-	websocketUrl := fmt.Sprintf("wss://%s:%d/%s?token=%s", host, port, path, token)
+	websocketUrl := fmt.Sprintf("wss://%s:%s/%s?token=%s", host, port, path, token)
 
 	return websocketUrl, nil
 }

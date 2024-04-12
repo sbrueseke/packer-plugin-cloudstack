@@ -119,7 +119,6 @@ type FlatConfig struct {
 	TemplateTag               *string           `mapstructure:"template_tag" cty:"template_tag" hcl:"template_tag"`
 	Tags                      map[string]string `mapstructure:"tags" cty:"tags" hcl:"tags"`
 	WebsocketURL              *string           `mapstructure:"websocket_url" required:"false" cty:"websocket_url" hcl:"websocket_url"`
-	WebsocketPort             *int              `mapstructure:"websocket_port" required:"false" cty:"websocket_port" hcl:"websocket_port"`
 	InsecureConnection        *bool             `mapstructure:"insecure_connection" required:"false" cty:"insecure_connection" hcl:"insecure_connection"`
 }
 
@@ -244,7 +243,6 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"template_tag":                 &hcldec.AttrSpec{Name: "template_tag", Type: cty.String, Required: false},
 		"tags":                         &hcldec.AttrSpec{Name: "tags", Type: cty.Map(cty.String), Required: false},
 		"websocket_url":                &hcldec.AttrSpec{Name: "websocket_url", Type: cty.String, Required: false},
-		"websocket_port":               &hcldec.AttrSpec{Name: "websocket_port", Type: cty.Number, Required: false},
 		"insecure_connection":          &hcldec.AttrSpec{Name: "insecure_connection", Type: cty.Bool, Required: false},
 	}
 	return s
