@@ -9,6 +9,7 @@ package cloudstack
 import (
 	"errors"
 	"fmt"
+	"github.com/hashicorp/packer-plugin-sdk/bootcommand"
 	"os"
 	"time"
 
@@ -26,6 +27,7 @@ type Config struct {
 	common.PackerConfig    `mapstructure:",squash"`
 	commonsteps.HTTPConfig `mapstructure:",squash"`
 	Comm                   communicator.Config `mapstructure:",squash"`
+	bootcommand.VNCConfig  `mapstructure:",squash"`
 
 	// The CloudStack API endpoint we will connect to. It can
 	// also be specified via environment variable CLOUDSTACK_API_URL, if set.
@@ -166,6 +168,11 @@ type Config struct {
 
 	Tags map[string]string `mapstructure:"tags"`
 
+	WebsocketURL string `mapstructure:"websocket_url" required:"false"`
+
+	// Do not validate VNC over websocket server's TLS certificate. Defaults to `false`.
+	InsecureConnection bool `mapstructure:"insecure_connection" required:"false"`
+
 	ctx interpolate.Context
 }
 
@@ -177,6 +184,7 @@ func (c *Config) Prepare(raws ...interface{}) error {
 		InterpolateFilter: &interpolate.RenderFilter{
 			Exclude: []string{
 				"user_data",
+				"boot_command",
 			},
 		},
 	}, raws...)

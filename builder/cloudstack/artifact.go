@@ -5,10 +5,9 @@ package cloudstack
 
 import (
 	"fmt"
+	"github.com/apache/cloudstack-go/v2/cloudstack"
 	"log"
 	"strings"
-
-	"github.com/apache/cloudstack-go/v2/cloudstack"
 )
 
 // Artifact represents a CloudStack template as the result of a Packer build.

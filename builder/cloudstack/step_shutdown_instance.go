@@ -6,8 +6,8 @@ package cloudstack
 import (
 	"context"
 	"fmt"
-
 	"github.com/apache/cloudstack-go/v2/cloudstack"
+
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 )

@@ -8,10 +8,10 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"github.com/apache/cloudstack-go/v2/cloudstack"
 	"net"
 	"strings"
 
-	"github.com/apache/cloudstack-go/v2/cloudstack"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"

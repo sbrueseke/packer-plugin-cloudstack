@@ -6,8 +6,8 @@ package cloudstack
 import (
 	"context"
 	"fmt"
-
 	"github.com/apache/cloudstack-go/v2/cloudstack"
+
 	"github.com/hashicorp/hcl/v2/hcldec"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
@@ -76,6 +76,17 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		},
 		&stepSetupNetworking{},
 		&stepDetachIso{},
+		&stepSetUpVNC{
+			VNCEnabled:         !b.config.DisableVNC,
+			WebsocketURL:       b.config.WebsocketURL,
+			InsecureConnection: b.config.InsecureConnection,
+		},
+		&stepBootCommandVNC{
+			VNCEnabled: !b.config.DisableVNC,
+			Config:     b.config.VNCConfig,
+			BootWait:   b.config.BootWait,
+			Ctx:        b.config.ctx,
+		},
 		&communicator.StepConnect{
 			Config:    &b.config.Comm,
 			Host:      communicator.CommHost(b.config.Comm.Host(), "ipaddress"),

@@ -73,6 +73,11 @@ type FlatConfig struct {
 	WinRMUseSSL               *bool             `mapstructure:"winrm_use_ssl" cty:"winrm_use_ssl" hcl:"winrm_use_ssl"`
 	WinRMInsecure             *bool             `mapstructure:"winrm_insecure" cty:"winrm_insecure" hcl:"winrm_insecure"`
 	WinRMUseNTLM              *bool             `mapstructure:"winrm_use_ntlm" cty:"winrm_use_ntlm" hcl:"winrm_use_ntlm"`
+	BootGroupInterval         *string           `mapstructure:"boot_keygroup_interval" cty:"boot_keygroup_interval" hcl:"boot_keygroup_interval"`
+	BootWait                  *string           `mapstructure:"boot_wait" cty:"boot_wait" hcl:"boot_wait"`
+	BootCommand               []string          `mapstructure:"boot_command" cty:"boot_command" hcl:"boot_command"`
+	DisableVNC                *bool             `mapstructure:"disable_vnc" cty:"disable_vnc" hcl:"disable_vnc"`
+	BootKeyInterval           *string           `mapstructure:"boot_key_interval" cty:"boot_key_interval" hcl:"boot_key_interval"`
 	APIURL                    *string           `mapstructure:"api_url" required:"true" cty:"api_url" hcl:"api_url"`
 	APIKey                    *string           `mapstructure:"api_key" required:"true" cty:"api_key" hcl:"api_key"`
 	SecretKey                 *string           `mapstructure:"secret_key" required:"true" cty:"secret_key" hcl:"secret_key"`
@@ -113,6 +118,8 @@ type FlatConfig struct {
 	TemplateScalable          *bool             `mapstructure:"template_scalable" required:"false" cty:"template_scalable" hcl:"template_scalable"`
 	TemplateTag               *string           `mapstructure:"template_tag" cty:"template_tag" hcl:"template_tag"`
 	Tags                      map[string]string `mapstructure:"tags" cty:"tags" hcl:"tags"`
+	WebsocketURL              *string           `mapstructure:"websocket_url" required:"false" cty:"websocket_url" hcl:"websocket_url"`
+	InsecureConnection        *bool             `mapstructure:"insecure_connection" required:"false" cty:"insecure_connection" hcl:"insecure_connection"`
 }
 
 // FlatMapstructure returns a new FlatConfig.
@@ -190,6 +197,11 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"winrm_use_ssl":                &hcldec.AttrSpec{Name: "winrm_use_ssl", Type: cty.Bool, Required: false},
 		"winrm_insecure":               &hcldec.AttrSpec{Name: "winrm_insecure", Type: cty.Bool, Required: false},
 		"winrm_use_ntlm":               &hcldec.AttrSpec{Name: "winrm_use_ntlm", Type: cty.Bool, Required: false},
+		"boot_keygroup_interval":       &hcldec.AttrSpec{Name: "boot_keygroup_interval", Type: cty.String, Required: false},
+		"boot_wait":                    &hcldec.AttrSpec{Name: "boot_wait", Type: cty.String, Required: false},
+		"boot_command":                 &hcldec.AttrSpec{Name: "boot_command", Type: cty.List(cty.String), Required: false},
+		"disable_vnc":                  &hcldec.AttrSpec{Name: "disable_vnc", Type: cty.Bool, Required: false},
+		"boot_key_interval":            &hcldec.AttrSpec{Name: "boot_key_interval", Type: cty.String, Required: false},
 		"api_url":                      &hcldec.AttrSpec{Name: "api_url", Type: cty.String, Required: false},
 		"api_key":                      &hcldec.AttrSpec{Name: "api_key", Type: cty.String, Required: false},
 		"secret_key":                   &hcldec.AttrSpec{Name: "secret_key", Type: cty.String, Required: false},
@@ -230,6 +242,8 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"template_scalable":            &hcldec.AttrSpec{Name: "template_scalable", Type: cty.Bool, Required: false},
 		"template_tag":                 &hcldec.AttrSpec{Name: "template_tag", Type: cty.String, Required: false},
 		"tags":                         &hcldec.AttrSpec{Name: "tags", Type: cty.Map(cty.String), Required: false},
+		"websocket_url":                &hcldec.AttrSpec{Name: "websocket_url", Type: cty.String, Required: false},
+		"insecure_connection":          &hcldec.AttrSpec{Name: "insecure_connection", Type: cty.Bool, Required: false},
 	}
 	return s
 }
