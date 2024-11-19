@@ -5,7 +5,7 @@ package cloudstack
 
 import (
 	"fmt"
-	"github.com/apache/cloudstack-go/v2/cloudstack"
+	"github.com/sbrueseke/cloudstack-go/v2/cloudstack"
 	"log"
 	"strings"
 )

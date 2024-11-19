@@ -8,7 +8,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"github.com/apache/cloudstack-go/v2/cloudstack"
+	"github.com/sbrueseke/cloudstack-go/v2/cloudstack"
 	"net"
 	"strings"
 
